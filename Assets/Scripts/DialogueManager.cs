@@ -41,11 +41,30 @@ public class DialogueManager : MonoBehaviour
                 return;
             }
 
-            string sentence = _sentences.Dequeue();
+        string sentence = _sentences.Dequeue();
+
+        //stops all sentences from animating if moved on ahead
+        StopAllCoroutines();
+        //starts animation of sentences
+        StartCoroutine(TypeSentence(sentence));
+
         //Debug.Log(sentence);
-        _dialogueText.text = sentence;
+       // _dialogueText.text = sentence;
 
         }
+
+    IEnumerator TypeSentence(string sentence)
+    {
+
+        _dialogueText.text = "";
+        foreach(char letter in sentence.ToCharArray())
+        {
+            _dialogueText.text += letter;
+
+            //wait before next letter (a single frame)
+            yield return null;
+        }
+    }
 
         void EndDialogue()
         {
